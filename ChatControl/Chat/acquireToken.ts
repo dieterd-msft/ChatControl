@@ -70,7 +70,7 @@ export async function acquireToken(settings: IAuthSettings): Promise<string | un
       return response.accessToken;
     } catch (silentError) {
       console.log('ssoSilent failed:', silentError);
-      if (silentError instanceof InteractionRequiredAuthError) {
+      if (silentError instanceof InteractionRequiredAuthError || silentError instanceof Error) {
         try {
           const response = await msalInstance.loginPopup(ssoRequest); 
           console.log('Token acquired via loginPopup');
