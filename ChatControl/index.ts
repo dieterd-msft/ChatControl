@@ -3,7 +3,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Chat, { IChatProps, ChatRef } from "./Chat/Chat";
 
-export class ChatControl
+export class AgentChat
   implements ComponentFramework.StandardControl<IInputs, IOutputs>
 {
   private _appDiv: HTMLDivElement;

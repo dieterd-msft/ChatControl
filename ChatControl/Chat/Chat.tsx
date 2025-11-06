@@ -344,7 +344,7 @@ const Chat = React.forwardRef<ChatRef, IChatProps>(
           <div
             style={{
               height: "50px",
-              width: "92%",
+              width: `calc(${chatWidth} - 10px)`,
               background: "white",
               borderRadius: "12px",
               padding: "16px 24px",
@@ -410,10 +410,10 @@ const Chat = React.forwardRef<ChatRef, IChatProps>(
                 styleOptions={{
                   rootHeight: "100%",
                   rootWidth: "100%",
-                  disableFileUpload: disableFileUploadButton,
+                  disableFileUpload: disableFileUploadButton
                 }}
               >
-                <BasicWebChat />
+                <BasicWebChat/>
               </Composer>
             </FluentThemeProvider>
           </div>
