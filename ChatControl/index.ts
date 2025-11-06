@@ -21,6 +21,7 @@ export class AgentChat
   private _chatInitialized = false;
   private _conversationId: string | undefined;
   private _eventValue: string | undefined;
+  private _prev_EventValue: string | undefined;
 
   /**
    * Initializes the control instance.
@@ -88,6 +89,7 @@ export class AgentChat
       baseUrl: this._settings.baseUrl,
       styleOptions: this._settings.styleOptions,
       disableFileUploadButton: this._settings.disableFileUploadButton,
+      disableHeader: this._context.parameters.disableHeader?.raw || false,
       width: allocatedWidth + "px",
       height: allocatedHeight + "px",
       onAgentMessageUpdate: (message: string) => {
@@ -163,6 +165,7 @@ export class AgentChat
       agentIdentifier: context.parameters.agentIdentifier.raw || "",
       disableFileUploadButton:
         context.parameters.disableFileUpload.raw || false,
+      disableHeader: context.parameters.disableHeader?.raw || false,
       directConnectUrl:
         "https://" +
           this.convertUUID(context.parameters.environmentId.raw || "") +
@@ -200,6 +203,8 @@ export class AgentChat
       context.parameters.disableFileUpload.raw;
     const hasStyleOptionsChanged =
       this._settings.styleOptions !== context.parameters.styleOptions.raw;
+    const hasDisableHeaderChanged =
+      this._settings.disableHeader !== context.parameters.disableHeader.raw;
 
     const hasAnyPropertyChanged =
       hasAgentTitleChanged ||
@@ -211,6 +216,7 @@ export class AgentChat
       hasDisableFileUploadChanged ||
       hasStyleOptionsChanged ||
       hasAllocatedWidthChanged ||
+      hasDisableHeaderChanged ||
       hasAllocatedHeightChanged;
     if (hasAnyPropertyChanged) {
       this._settings = this._initializeSettings(context);
@@ -236,6 +242,28 @@ export class AgentChat
         this._prevMessage = this._userMessage;
         if (this._chatRef.current) {
           this._chatRef.current.sendMessage(this._userMessage);
+        }
+        return;
+      }
+    }
+
+    if (
+      this._conversationId !== undefined &&
+      (this._eventValue === undefined ||
+        this._eventValue !== context.parameters.eventValue?.raw)
+    ) {
+      this._eventValue = context.parameters.eventValue?.raw ?? undefined;
+      //const newMessage = context.parameters.message?.raw ?? undefined;
+      if (
+        this._eventValue &&
+        this._eventValue !== "val" &&
+        this._eventValue !== this._prev_EventValue
+      ) {
+        this._prev_EventValue = this._eventValue;
+        if (this._chatRef.current) {
+          this._chatRef.current.sendEvent("webchat/join", {
+              message: this._eventValue,
+            });
         }
         return;
       }

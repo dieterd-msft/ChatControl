@@ -25,6 +25,7 @@ export interface IChatProps {
   directConnectUrl?: string;
   showTyping?: boolean;
   disableFileUploadButton?: boolean;
+  disableHeader?: boolean;
   currentUserLogin?: string;
   baseUrl?: string;
   styleOptions?: string;
@@ -52,6 +53,7 @@ const Chat = React.forwardRef<ChatRef, IChatProps>(
       directConnectUrl,
       showTyping = true,
       disableFileUploadButton,
+      disableHeader,
       currentUserLogin,
       baseUrl,
       width,
@@ -266,8 +268,9 @@ const Chat = React.forwardRef<ChatRef, IChatProps>(
             padding: "16px 24px",
           }}
         >
-          <div
-            style={{
+            {!disableHeader && (
+            <div
+              style={{
               height: "50px",
               width: "88%",
               background: "white",
@@ -277,50 +280,51 @@ const Chat = React.forwardRef<ChatRef, IChatProps>(
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-            }}
-          >
-            <h3
+              }}
+            >
+              <h3
               style={{
                 margin: 0,
                 fontSize: 16,
                 fontWeight: 600,
                 color: "#323130",
               }}
-            >
+              >
               {agentTitle}
-            </h3>
-            <div
+              </h3>
+              <div
               style={{
                 display: "flex",
                 gap: "8px",
                 alignItems: "center",
               }}
-            >
+              >
               <button
                 style={{
-                  background: "none",
-                  border: "1px solid #605e5c",
-                  cursor: "pointer",
-                  padding: "8px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "left",
-                  color: "#605e5c",
-                  borderRadius: "4px",
-                  transition: "all 0.2s ease",
+                background: "none",
+                border: "1px solid #605e5c",
+                cursor: "pointer",
+                padding: "8px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "left",
+                color: "#605e5c",
+                borderRadius: "4px",
+                transition: "all 0.2s ease",
                 }}
                 aria-label="Start new conversation"
                 onClick={onNewConversation}
                 title="Start new conversation"
               >
                 <span>
-                  <NewChatIcon />
+                <NewChatIcon />
                 </span>
                 &nbsp;New chat
               </button>
+              </div>
             </div>
-          </div>
-          <div style={{ height: `calc(${chatHeight} - 120px)`, width: "95%" }}>
+            )}
+          <div style={{ height:  disableHeader ? chatHeight : `calc(${chatHeight} - 120px)`, width: "95%" }}>
             <ReactWebChat
               directLine={connection}
               store={store}
@@ -341,10 +345,11 @@ const Chat = React.forwardRef<ChatRef, IChatProps>(
             flexDirection: "column",
           }}
         >
-          <div
-            style={{
+            {!disableHeader && (
+            <div
+              style={{
               height: "50px",
-              width: `calc(${chatWidth} - 10px)`,
+              width: chatWidth,
               background: "white",
               borderRadius: "12px",
               padding: "16px 24px",
@@ -352,71 +357,72 @@ const Chat = React.forwardRef<ChatRef, IChatProps>(
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-            }}
-          >
-            <h3
+              }}
+            >
+              <h3
               style={{
                 margin: 0,
                 fontSize: 16,
                 fontWeight: 600,
                 color: "#323130",
               }}
-            >
+              >
               {agentTitle}
-            </h3>
-            <div
+              </h3>
+              <div
               style={{
                 display: "flex",
                 gap: "8px",
                 alignItems: "center",
               }}
-            >
+              >
               <button
                 style={{
-                  background: "none",
-                  border: "1px solid #605e5c",
-                  cursor: "pointer",
-                  padding: "8px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "left",
-                  color: "#605e5c",
-                  borderRadius: "4px",
-                  transition: "all 0.2s ease",
+                background: "none",
+                border: "1px solid #605e5c",
+                cursor: "pointer",
+                padding: "8px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "left",
+                color: "#605e5c",
+                borderRadius: "4px",
+                transition: "all 0.2s ease",
                 }}
                 aria-label="Start new conversation"
                 onClick={onNewConversation}
                 title="Start new conversation"
               >
                 <span>
-                  <NewChatIcon />
+                <NewChatIcon />
                 </span>
                 &nbsp;New chat
               </button>
+              </div>
             </div>
-          </div>
-          <div
+            )}
+            <div
             style={{
-              height: `calc(${chatHeight} - 60px)`,
+              height: disableHeader ? chatHeight : `calc(${chatHeight} - 60px)`,
               width: chatWidth,
               minHeight: "400px",
               minWidth: "200px",
             }}
-          >
+            >
             <FluentThemeProvider fontSize="14px">
               <Composer
-                directLine={connection}
-                store={store}
-                styleOptions={{
-                  rootHeight: "100%",
-                  rootWidth: "100%",
-                  disableFileUpload: disableFileUploadButton
-                }}
+              directLine={connection}
+              store={store}
+              styleOptions={{
+                rootHeight: "100%",
+                rootWidth: "100%",
+                disableFileUpload: disableFileUploadButton
+              }}
               >
-                <BasicWebChat/>
+              <BasicWebChat/>
               </Composer>
             </FluentThemeProvider>
-          </div>
+            </div>
         </div>
       );
     }
