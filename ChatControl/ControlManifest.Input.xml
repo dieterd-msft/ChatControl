@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest>
-  <control namespace="AgentControls" constructor="AgentChat" version="1.3.0"
+  <control namespace="AgentControls" constructor="AgentChat" version="1.4.0"
     display-name-key="AgentChat" description-key="Agent Chat" control-type="standard">
     <external-service-usage enabled="false">
     </external-service-usage>

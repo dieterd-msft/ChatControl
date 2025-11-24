@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Components, createStore, ReactWebChat } from "botframework-webchat";
+import { Components, createStore } from "botframework-webchat";
+import ReactWebChat from 'botframework-webchat';
 import { FluentThemeProvider } from "botframework-webchat-fluent-theme";
 
 import {
@@ -116,19 +117,6 @@ const Chat = React.forwardRef<ChatRef, IChatProps>(
       lastConversationId,
     ]);
 
-    // Separate effect for sending messages (if needed)
-    // const [shouldSendHello, setShouldSendHello] = useState(false);
-
-    // useEffect(() => {
-    //   if (shouldSendHello) {
-    //     store.dispatch({
-    //       type: "WEB_CHAT/SEND_MESSAGE",
-    //       payload: { text: "Hello" },
-    //     });
-    //     setShouldSendHello(false);
-    //   }
-    // }, [shouldSendHello, store]);
-
     const chatWidth = typeof width === "number" ? `${width}px` : width;
     const chatHeight = typeof height === "number" ? `${height}px` : height;
 
@@ -164,7 +152,7 @@ const Chat = React.forwardRef<ChatRef, IChatProps>(
           });
 
           const clientInstance = new CopilotStudioClient(settings, token);
-          const webchatSettings = { showTyping };
+          const webchatSettings = { showTyping: false };
 
           if (!cancelled) {
             const connectionInstance =
@@ -172,14 +160,14 @@ const Chat = React.forwardRef<ChatRef, IChatProps>(
                 clientInstance,
                 webchatSettings
               );
-
+              
             try {
               setConnection(connectionInstance);
             } catch (error) {
               console.error("Error setting connection:", error);
               setError("Failed to establish connection");
             }
-
+            
             //setConnection(
             //
             //);
@@ -349,7 +337,7 @@ const Chat = React.forwardRef<ChatRef, IChatProps>(
             <div
               style={{
               height: "50px",
-              width: chatWidth,
+              width: `calc(${chatWidth} - 60px)`,
               background: "white",
               borderRadius: "12px",
               padding: "16px 24px",
@@ -416,10 +404,10 @@ const Chat = React.forwardRef<ChatRef, IChatProps>(
               styleOptions={{
                 rootHeight: "100%",
                 rootWidth: "100%",
-                disableFileUpload: disableFileUploadButton
+                disableFileUpload: disableFileUploadButton,
               }}
               >
-              <BasicWebChat/>
+              <BasicWebChat />
               </Composer>
             </FluentThemeProvider>
             </div>

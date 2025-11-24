@@ -21,7 +21,7 @@ export class AgentChat
   private _chatInitialized = false;
   private _conversationId: string | undefined;
   private _eventValue: string | undefined;
-  private _prev_EventValue: string | undefined;
+  private _prevEventValue: string | undefined;
 
   /**
    * Initializes the control instance.
@@ -257,9 +257,9 @@ export class AgentChat
       if (
         this._eventValue &&
         this._eventValue !== "val" &&
-        this._eventValue !== this._prev_EventValue
+        this._eventValue !== this._prevEventValue
       ) {
-        this._prev_EventValue = this._eventValue;
+        this._prevEventValue = this._eventValue;
         if (this._chatRef.current) {
           this._chatRef.current.sendEvent("webchat/join", {
               message: this._eventValue,
